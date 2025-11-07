@@ -13,6 +13,7 @@ const Navigation = () => {
     { href: "/lore", label: "LORE" },
     { href: "/join", label: "JOIN" },
     { href: "/safehouse", label: "SAFEHOUSE" },
+    { href: "/login", label: "LOGIN" },
   ];
 
   const isActive = (path: string) => location.pathname === path;

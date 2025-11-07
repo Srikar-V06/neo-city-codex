@@ -5,16 +5,41 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import bountyBg from "@/assets/bounties-bg.jpg";
 import { Search, Filter, TrendingUp } from "lucide-react";
+import { useMemo, useState, type CSSProperties } from "react";
 
 const Bounties = () => {
-  const bounties = [
-    { target: "CIPHER GHOST", location: "Sector 7 - Data Nexus", reward: "₢ 45,000", timeLeft: "2h 15m", status: "urgent" as const },
-    { target: "VIPER SYNDICATE", location: "Lower District", reward: "₢ 28,500", timeLeft: "8h 30m", status: "active" as const },
-    { target: "NEURAL PHANTOM", location: "Corporate Tower", reward: "₢ 67,000", timeLeft: "1h 45m", status: "urgent" as const },
-    { target: "SHADOW BROKER", location: "Black Market Hub", reward: "₢ 52,000", timeLeft: "12h 00m", status: "active" as const },
-    { target: "TECH CARTEL", location: "Industrial Zone", reward: "₢ 38,900", timeLeft: "6h 20m", status: "active" as const },
-    { target: "VOID RUNNER", location: "Neon Alley", reward: "₢ 41,500", timeLeft: "4h 55m", status: "active" as const },
-  ];
+  // Master bounty list (mock). In real app, fetch via React Query
+  const allBounties = useMemo(
+    () => [
+      { target: "CIPHER GHOST", location: "Sector 7 - Data Nexus", reward: "₢ 45,000", timeLeft: "2h 15m", status: "urgent" as const },
+      { target: "VIPER SYNDICATE", location: "Lower District", reward: "₢ 28,500", timeLeft: "8h 30m", status: "active" as const },
+      { target: "NEURAL PHANTOM", location: "Corporate Tower", reward: "₢ 67,000", timeLeft: "1h 45m", status: "urgent" as const },
+      { target: "SHADOW BROKER", location: "Black Market Hub", reward: "₢ 52,000", timeLeft: "12h 00m", status: "active" as const },
+      { target: "TECH CARTEL", location: "Industrial Zone", reward: "₢ 38,900", timeLeft: "6h 20m", status: "active" as const },
+      { target: "VOID RUNNER", location: "Neon Alley", reward: "₢ 41,500", timeLeft: "4h 55m", status: "active" as const },
+      { target: "CRIMSON LOTUS", location: "Sector 3 - BioLabs", reward: "₢ 58,700", timeLeft: "9h 10m", status: "active" as const },
+      { target: "DATAVORE", location: "SubNet 12", reward: "₢ 33,200", timeLeft: "7h 05m", status: "active" as const },
+      { target: "WRAITH KING", location: "Corporate Tower", reward: "₢ 72,000", timeLeft: "3h 20m", status: "urgent" as const },
+      { target: "ECHO FOX", location: "Neon Alley", reward: "₢ 27,800", timeLeft: "10h 40m", status: "active" as const },
+      { target: "ION SERAPH", location: "SkyPort", reward: "₢ 63,500", timeLeft: "5h 00m", status: "active" as const },
+      { target: "BLACK ICE", location: "Sector 9 - Data Node", reward: "₢ 49,900", timeLeft: "6h 45m", status: "active" as const },
+    ],
+    [],
+  );
+
+  const [visibleCount, setVisibleCount] = useState(6);
+  const [query, setQuery] = useState("");
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return allBounties;
+    return allBounties.filter((b) =>
+      [b.target, b.location, b.status].some((field) => field.toLowerCase().includes(q)),
+    );
+  }, [allBounties, query]);
+
+  const visibleBounties = useMemo(() => filtered.slice(0, visibleCount), [filtered, visibleCount]);
+  const canLoadMore = visibleCount < filtered.length;
 
   return (
     <div className="min-h-screen bg-background">
@@ -68,6 +93,11 @@ const Bounties = () => {
               <Input 
                 placeholder="SEARCH TARGETS..." 
                 className="pl-10 bg-background/50 border-border/50 font-mono text-sm"
+                value={query}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  setVisibleCount(6); // reset pagination on new search
+                }}
               />
             </div>
             <Button variant="outline" className="border-primary/30 hover:bg-primary/10 font-display tracking-wider gap-2">
@@ -88,12 +118,12 @@ const Bounties = () => {
           </DangerAlert>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
-            {bounties.map((bounty, index) => (
+            {visibleBounties.map((bounty, index) => (
               <BountyCard
                 key={index}
                 {...bounty}
                 className="animate-fade-in"
-                style={{ animationDelay: `${index * 100}ms` } as any}
+                style={{ animationDelay: `${index * 100}ms` } as CSSProperties}
               />
             ))}
           </div>
@@ -101,9 +131,11 @@ const Bounties = () => {
           <div className="flex justify-center mt-12">
             <Button 
               size="lg"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 font-display font-bold tracking-wider hover:scale-105 transition-all hover:shadow-xl hover:shadow-primary/50"
+              onClick={() => setVisibleCount((c) => Math.min(c + 6, filtered.length))}
+              disabled={!canLoadMore}
+              className="bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed font-display font-bold tracking-wider hover:scale-105 transition-all hover:shadow-xl hover:shadow-primary/50"
             >
-              LOAD MORE BOUNTIES
+              {canLoadMore ? "LOAD MORE BOUNTIES" : "NO MORE RESULTS"}
             </Button>
           </div>
         </div>

@@ -1,5 +1,5 @@
 import Navigation from "@/components/Navigation";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type CSSProperties } from "react";
 import cityLayers from "@/assets/city-layers.jpg";
 import { Shield, Cpu, Zap, Users } from "lucide-react";
 
@@ -94,7 +94,7 @@ const Lore = () => {
                 <div 
                   key={index}
                   className="relative flex flex-col md:flex-row gap-8 group animate-fade-in"
-                  style={{ animationDelay: `${index * 200}ms` } as any}
+                  style={{ animationDelay: `${index * 200}ms` } as CSSProperties}
                 >
                   {/* Year badge */}
                   <div className="flex-shrink-0">
@@ -158,7 +158,7 @@ const Lore = () => {
               <div 
                 key={index}
                 className="group relative p-8 rounded-lg border border-border/50 bg-card/40 backdrop-blur-sm hover:border-primary/50 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/20 animate-fade-in data-stream"
-                style={{ animationDelay: `${index * 150}ms` } as any}
+                style={{ animationDelay: `${index * 150}ms` } as CSSProperties}
               >
                 <div className="absolute inset-0 cyber-grid opacity-5" />
                 <div className="relative space-y-4">

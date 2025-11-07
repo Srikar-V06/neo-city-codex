@@ -4,6 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import penthouseBg from "@/assets/penthouse-bg.jpg";
 import { Activity, TrendingUp, Award, Clock, Zap, Target, Shield, Users } from "lucide-react";
+import type { CSSProperties } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Safehouse = () => {
   const stats = [
@@ -23,6 +25,15 @@ const Safehouse = () => {
     { name: "Ghost Operative", description: "Complete 100 missions undetected", icon: Shield },
     { name: "Elite Hacker", description: "Break 50 corporate security systems", icon: Activity },
     { name: "Team Player", description: "Complete 25 co-op missions", icon: Users },
+  ];
+
+  const navigate = useNavigate();
+
+  const quickActions = [
+    { label: "New Mission", icon: Target, onClick: () => navigate("/missions") },
+    { label: "Upgrade Gear", icon: Shield, onClick: () => navigate("/upgrades") },
+    { label: "Team Chat", icon: Users, onClick: () => navigate("/comms") },
+    { label: "Market", icon: Zap, onClick: () => navigate("/market") },
   ];
 
   return (
@@ -82,7 +93,7 @@ const Safehouse = () => {
                 <div 
                   key={index}
                   className="relative group p-6 rounded-lg border border-border/50 bg-card/40 backdrop-blur-sm hover:border-primary/50 transition-all hover:scale-105 animate-fade-in"
-                  style={{ animationDelay: `${index * 100}ms` } as any}
+                  style={{ animationDelay: `${index * 100}ms` } as CSSProperties}
                 >
                   <div className="absolute inset-0 cyber-grid opacity-5" />
                   <div className="relative space-y-2">
@@ -187,19 +198,15 @@ const Safehouse = () => {
               QUICK <span className="text-primary neon-text">ACTIONS</span>
             </h2>
             <div className="grid md:grid-cols-4 gap-4">
-              {[
-                { label: "New Mission", icon: Target },
-                { label: "Upgrade Gear", icon: Shield },
-                { label: "Team Chat", icon: Users },
-                { label: "Market", icon: Zap },
-              ].map((action, index) => {
+              {quickActions.map((action, index) => {
                 const Icon = action.icon;
                 return (
                   <Button
-                    key={index}
+                    key={action.label}
+                    onClick={action.onClick}
                     variant="outline"
                     className="h-24 border-border/50 hover:border-primary/50 hover:bg-primary/10 font-display tracking-wider group animate-fade-in"
-                    style={{ animationDelay: `${index * 100}ms` } as any}
+                    style={{ animationDelay: `${index * 100}ms` } as CSSProperties}
                   >
                     <div className="flex flex-col items-center gap-2">
                       <Icon className="w-6 h-6 group-hover:scale-110 transition-transform" />
