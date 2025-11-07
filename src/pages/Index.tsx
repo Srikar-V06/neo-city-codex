@@ -5,8 +5,11 @@ import { Button } from "@/components/ui/button";
 import heroBg from "@/assets/hero-bg.jpg";
 import character from "@/assets/character.jpg";
 import { ChevronRight, Zap, Database, Users } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
@@ -50,6 +53,7 @@ const Index = () => {
               <div className="flex flex-wrap gap-4 animate-fade-in-delay">
                 <Button 
                   size="lg" 
+                  onClick={() => navigate('/bounties')}
                   className="bg-primary text-primary-foreground hover:bg-primary/90 font-display font-bold tracking-wider group hover:scale-105 transition-all hover:shadow-xl hover:shadow-primary/50"
                 >
                   START MISSION
@@ -58,6 +62,7 @@ const Index = () => {
                 <Button 
                   size="lg" 
                   variant="outline"
+                  onClick={() => navigate('/lore')}
                   className="border-primary/50 text-primary hover:bg-primary/10 font-display tracking-wider hover:scale-105 transition-all hover:shadow-lg hover:shadow-primary/30"
                 >
                   VIEW ARCHIVE
@@ -178,15 +183,15 @@ const Index = () => {
               © 2077 NEOCITY SYNDICATE. ALL RIGHTS RESERVED.
             </p>
             <div className="flex flex-wrap justify-center gap-6">
-              <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-all hover:scale-110">
+              <button onClick={() => navigate('/lore')} className="text-sm text-muted-foreground hover:text-primary transition-all hover:scale-110">
                 PRIVACY PROTOCOL
-              </a>
-              <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-all hover:scale-110">
+              </button>
+              <button onClick={() => navigate('/lore')} className="text-sm text-muted-foreground hover:text-primary transition-all hover:scale-110">
                 TERMS OF SERVICE
-              </a>
-              <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-all hover:scale-110">
+              </button>
+              <button onClick={() => navigate('/join')} className="text-sm text-muted-foreground hover:text-primary transition-all hover:scale-110">
                 CONTACT
-              </a>
+              </button>
             </div>
           </div>
         </div>
